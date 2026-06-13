@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+const { initDb } = require('./database');
 const authRoutes = require('./routes/auth');
 const chatRoutes = require('./routes/chats');
 
@@ -17,4 +18,11 @@ app.get('/health', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+
+// Primero inicializa la BD, luego levanta el servidor
+initDb().then(() => {
+  app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+}).catch(err => {
+  console.error('Error iniciando base de datos:', err);
+  process.exit(1);
+});

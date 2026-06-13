@@ -1,2 +1,5 @@
 node_modules/
 .env
+inova.db
+inova.db-shm
+inova.db-wal
